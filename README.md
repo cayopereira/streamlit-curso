@@ -1,0 +1,1 @@
+Projeto do curso de Streamlit da Alura.
