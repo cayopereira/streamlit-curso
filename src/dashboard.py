@@ -27,6 +27,12 @@ receita_mensal['Mes'] = receita_mensal['Data da Compra'].dt.month_name()
 
 receita_categorias = dados.groupby('Categoria do Produto')[['Preço']].sum().sort_values('Preço', ascending=False)
 
+### Tabelas quantidade de vendas
+
+
+### Tabelas vendedores 
+vendedores = pd.DataFrame(dados.groupby('Vendedor')['Preço'].agg(['sum', 'count']))
+
 
 ## Gráficos
 fig_mapa_receita = px.scatter_geo(receita_estados,
@@ -91,12 +97,35 @@ with aba2:
         st.metric('Quantidade de vendas', formata_numero(dados.shape[0]))
     
 with aba3:
+    qtd_vendedores = st.number_input('Quantidade de vendedores', 2, 10, 5)
     coluna1, coluna2 = st.columns(2)
     with coluna1:
         st.metric('Receita', formata_numero(dados['Preço'].sum(), 'R$'))
+        fig_receita_vendedores = px.bar(
+    vendedores[['sum']].sort_values('sum', ascending=False).head(qtd_vendedores),
+    x='sum',
+    y=vendedores[['sum']].sort_values('sum', ascending=False).head(qtd_vendedores).index,
+    text_auto=True,
+    title=f'Top {qtd_vendedores} vendedores (receita)'
+    )
+
+    st.plotly_chart(fig_receita_vendedores)
+
        
     with coluna2:
         st.metric('Quantidade de vendas', formata_numero(dados.shape[0]))
+        fig_vendas_vendedores = px.bar(
+    vendedores[['count']].sort_values('count', ascending=False).head(qtd_vendedores),
+    x='count',
+    y=vendedores[['count']].sort_values('count', ascending=False).head(qtd_vendedores).index,
+    text_auto=True,
+    title=f'Top {qtd_vendedores} vendedores (quantidade de vendas)'
+    )
+
+    st.plotly_chart(fig_vendas_vendedores)
+
+
+
 
 
 
