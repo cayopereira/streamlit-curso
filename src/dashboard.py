@@ -52,7 +52,7 @@ receita_categorias = dados.groupby('Categoria do Produto')[['Preço']].sum().sor
 vendas_estados = pd.DataFrame(dados.groupby('Local da compra')['Preço'].count())
 vendas_estados = dados.drop_duplicates(subset = 'Local da compra')[['Local da compra','lat', 'lon']].merge(vendas_estados, left_on = 'Local da compra', right_index = True).sort_values('Preço', ascending = False)
 
-vendas_mensal = pd.DataFrame(dados.set_index('Data da Compra').groupby(pd.Grouper(freq = 'M'))['Preço'].count()).reset_index()
+vendas_mensal = pd.DataFrame(dados.set_index('Data da Compra').groupby(pd.Grouper(freq = 'ME'))['Preço'].count()).reset_index()
 vendas_mensal['Ano'] = vendas_mensal['Data da Compra'].dt.year
 vendas_mensal['Mes'] = vendas_mensal['Data da Compra'].dt.month_name()
 
