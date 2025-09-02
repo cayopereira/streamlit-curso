@@ -39,7 +39,7 @@ if filtro_vendedores:
 
 
 ## Tabelas
-receita_estados = dados.groupby('Local da compra')[['Preço']].sum().reset_index()
+receita_estados = dados.groupby('Local da compra')[['Preço']].sum()
 receita_estados = dados.drop_duplicates(subset = 'Local da compra')[['Local da compra', 'lat', 'lon']].merge(receita_estados, left_on = 'Local da compra', right_index = True).sort_values('Preço', ascending = False)
 
 receita_mensal = dados.set_index('Data da Compra').groupby(pd.Grouper(freq='ME'))['Preço'].sum().reset_index()
